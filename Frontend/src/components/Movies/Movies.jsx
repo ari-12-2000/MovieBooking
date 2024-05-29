@@ -17,6 +17,7 @@ const Movies = () => {
 
   const [filterData, setFilterData] = useState({ key: "", value: "" });
   const [filteredMovies, setFilteredMovies] = useState(movies);
+  const [boxHeight, setBoxHeight] = useState(window.innerHeight);
 
   const handleFilterData = (key, value) => {
     setFilterData({ key, value });
@@ -48,6 +49,20 @@ const Movies = () => {
     }
   }, [status, navigate]);
 
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const newHeight = Math.max(window.innerHeight, window.innerHeight + window.scrollY);
+      setBoxHeight(newHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   if (status === "loading") {
     return (
       <Box
@@ -68,7 +83,7 @@ const Movies = () => {
         flexDirection="column"
         alignItems="center"
         padding={6}
-        sx={{ backgroundColor: "black", width: "20%", height: "100vh" }}
+        sx={{ backgroundColor: "black", width: "20%", height: `${boxHeight}px` }}
       >
         <Button
           sx={{

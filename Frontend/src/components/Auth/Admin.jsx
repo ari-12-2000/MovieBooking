@@ -21,8 +21,8 @@ const Admin = () => {
   const getData = (data) => {
     sendAdminAuthRequest(data.inputs)
       .then(onResRecieved)
-      .catch(() => setError("Invaild credentials"));
-      console.log("Error",error)
+      .catch((err) => setError("Invalid Input or inputs already used"));
+      
   };
 
   return (

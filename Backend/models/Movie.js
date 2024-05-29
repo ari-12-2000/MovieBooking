@@ -16,6 +16,7 @@ const movieSchema = new mongoose.Schema({
   posterUrl: {
     type: String,
     required: true,
+    unique:true,
   },
   featured: {
     type: Boolean,

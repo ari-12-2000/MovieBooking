@@ -21,9 +21,7 @@ const Auth = () => {
     sendUserAuthRequest(data.inputs, data.signup)
       .then(onResReceived)
       .catch((err) =>
-        data.signup
-          ? setError("Invalid credentials or credentials already in use")
-          : setError("Invalid credentials")
+        setError("Invalid Input or inputs already used")
       );
   };
 

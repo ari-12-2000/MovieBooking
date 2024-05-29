@@ -14,6 +14,7 @@ const newBooking = async (req, res) => {
     let existingMovie = await Movie.findById(movie);
     let existingUser = await User.findById(user);
 
+    console.log(existingMovie.bookings);
     const session = await mongoose.startSession();
     session.startTransaction();
     existingUser.bookings.push(booking);
@@ -23,10 +24,12 @@ const newBooking = async (req, res) => {
     await booking.save({ session });
     session.commitTransaction();
 
+    if(!booking)
+      return res.status(500).json({ message: "Unable to book" });
     res.status(200).json({ booking });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Unable to book" });
+    res.status(500).json({ message: "Unable to book" });
   }
 };
 
@@ -34,10 +37,13 @@ const getBookingById= async(req,res)=>{
   try{
      const id=req.params.id;
      const booking= await Bookings.findById(id);
+     if (!booking) {
+      return res.status(500).json({ message: "Unable to Find" });
+    }
      res.status(200).json({booking})
   }catch(err){
     console.log(err);
-    res.status(500).json({ error: "Unable to book" });
+    res.status(500).json({ message: "Unable to book" });
   }
 }
 
@@ -61,7 +67,7 @@ const deleteBooking = async(req,res)=>{
   res.status(200).json({ message:"Successfully deleted" });
   }catch(err){
     console.log(err);
-    res.status(500).json({ error: "Unable to delete" });
+    res.status(500).json({ message: "Unable to delete" });
   }
 }
 module.exports = {newBooking, getBookingById, deleteBooking};

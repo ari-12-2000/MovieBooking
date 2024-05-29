@@ -39,7 +39,7 @@ const Booking = () => {
       })
       .catch((err) => {
         console.log(err);
-        setError(err.message);
+        setError("Invalid Input or inputs already used");
       });
   };
 
