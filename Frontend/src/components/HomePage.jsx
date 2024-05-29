@@ -7,6 +7,7 @@ import MovieItem from "./Movies/MovieItem";
 const HomePage = () => {
   const movies = useSelector((state) => state.movies.movies);
   const status = useSelector((state) => state.movies.status);
+  const searchTerm = useSelector((state) => state.movies.searchTerm);
   const navigate = useNavigate();
 
   const isLoading = status === "loading";
@@ -77,6 +78,10 @@ const HomePage = () => {
     </Box>
   );
 
+  useEffect(()=>{
+      if(searchTerm.trim())
+           navigate("/movies") 
+  },[])
   useEffect(() => {
     if (isError) {
       navigate("/error");

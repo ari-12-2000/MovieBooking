@@ -12,11 +12,7 @@ import MovieCreationIcon from "@mui/icons-material/MovieCreation";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash"; // Import lodash for debounce functionality
-import {
-  userActions,
-  adminActions,
-  setSearchTerm,
-} from "../store/index";
+import { userActions, adminActions, setSearchTerm } from "../store/index";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -25,12 +21,16 @@ const Header = () => {
   const [isErrorPage, setIsErrorPage] = useState(
     location.pathname === "/error"
   );
+
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
+  
+  const [disableSearchbox, setDisableSearchbox] = useState(false);
+  
+
   const dispatch = useDispatch();
 
   const movies = useSelector((state) => state.movies.movies);
- 
 
   useEffect(() => {
     switch (location.pathname) {
@@ -41,20 +41,34 @@ const Header = () => {
       case "/user-profile":
       case "/admin-profile":
         setValue(1);
+
         break;
       case "/auth":
       case "/add":
         setValue(2);
+
         break;
       default:
         setValue(false);
     }
+    setDisableSearchbox(
+      location.pathname !== "/movies" && location.pathname !== "/"
+    );
+
+
     setIsErrorPage(location.pathname === "/error");
-  }, [location.pathname]);
+  }, [
+    location.pathname,
+    dispatch,
+    setSearchTerm,
+    setIsErrorPage,
+    setDisableSearchbox,
+  ]);
 
   const handleMovieSelect = useCallback(
     _.debounce((val) => {
       console.log(val);
+      dispatch(setSearchTerm(val)); 
       if (val && val.trim() !== "") {
         const movie = movies.find((mov) => mov.title === val);
 
@@ -154,19 +168,17 @@ const Header = () => {
   };
 
   const handleChange = (e) => {
-   
-      let value = e.target.value.trim();
-      if (!value && location.pathname!=="/movies") return;
-      dispatch(setSearchTerm(value));
-      navigate("/movies");
-    
+    let value = e.target.value.trim();
+    if (!value && location.pathname !== "/movies") return;
+    dispatch(setSearchTerm(value));
+    navigate("/movies");
   };
 
-  const handleKeyDown=(e)=>{
+  const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleMovieSelect(e.target.value);
     }
-  }
+  };
 
   return (
     <AppBar position="sticky" sx={{ bgcolor: "#2b2d42" }}>
@@ -187,7 +199,7 @@ const Header = () => {
             }}
             freeSolo
             id="free-solo-2-demo"
-            disableClearable
+            disableClearable={!disableSearchbox}
             options={movies.map((option) => option.title)}
             renderInput={(params) => (
               <TextField
@@ -206,9 +218,12 @@ const Header = () => {
                 }}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
-                disabled={isErrorPage} // Disable the search box if current path is "/error"
+                disabled={isErrorPage || disableSearchbox} // Disable the search box if current path is "/error"
+                
               />
             )}
+            disabled={isErrorPage || disableSearchbox}
+          
           />
         </Box>
         <Box display="flex">

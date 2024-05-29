@@ -8,7 +8,10 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
+
 const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
+
+  const adminId = localStorage.getItem("adminId");
   return (
     <Card
       sx={{
@@ -43,7 +46,7 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
           {genre}
         </Typography>
       </CardContent>
-      <CardActions>
+    { !adminId && <CardActions>
         <Button
           component={Link}
           to={`/booking/${id}`}
@@ -54,7 +57,7 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
         >
           Book
         </Button>
-      </CardActions>
+      </CardActions>}
     </Card>
   );
 };

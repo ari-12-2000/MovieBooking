@@ -45,6 +45,7 @@ const Booking = () => {
 
   return (
     <Box padding={2}>
+    <Typography color="error">THIS PAGE IS NOT FOR ADMIN USERS </Typography>
       {movie && (
         <>
           <Typography

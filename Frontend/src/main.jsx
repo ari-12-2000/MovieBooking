@@ -17,7 +17,7 @@ import AddMovie from "./components/Movies/AddMovie.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx"; // import the protected route component
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://moviebooking-9iea.onrender.com";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +35,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "/auth", element: <Auth /> },
+      {
+        path: "/auth",
+        element: (
+         
+            <Auth />
+          
+        ),
+      },
       {
         path: "/booking/:id",
         element: (
