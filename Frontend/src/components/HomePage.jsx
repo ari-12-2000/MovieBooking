@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import MovieItem from "./Movies/MovieItem";
 
@@ -9,7 +9,7 @@ const HomePage = () => {
   const status = useSelector((state) => state.movies.status);
   const searchTerm = useSelector((state) => state.movies.searchTerm);
   const navigate = useNavigate();
-
+  
   const isLoading = status === "loading";
   const isError = status === "failed";
 
@@ -78,10 +78,7 @@ const HomePage = () => {
     </Box>
   );
 
-  useEffect(()=>{
-      if(searchTerm.trim())
-           navigate("/movies") 
-  },[])
+
   useEffect(() => {
     if (isError) {
       navigate("/error");

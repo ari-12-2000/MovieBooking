@@ -47,12 +47,17 @@ const moviesSlice = createSlice({
     status: "idle",
     error: null,
     searchTerm: "",
-    attribute: "",
-    attributeValue: "",
+    key: "",
+    value: "",
   },
   reducers: {
     setSearchTerm(state, action) {
       state.searchTerm = action.payload;
+    },
+    setKeyValue(state, action) {
+      const { key, value } = action.payload;
+      state.key = key;
+      state.value = value;
     },
   },
   extraReducers: (builder) => {
@@ -73,7 +78,7 @@ const moviesSlice = createSlice({
 
 export const userActions = userSlice.actions;
 export const adminActions = adminSlice.actions;
-export const { setSearchTerm } = moviesSlice.actions;
+export const { setSearchTerm, setKeyValue } = moviesSlice.actions;
 
 export const store = configureStore({
   reducer: {

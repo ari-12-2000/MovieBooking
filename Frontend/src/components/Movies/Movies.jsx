@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MovieItem from "./MovieItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setKeyValue, fetchMovies } from "../../store";
 
 const Movies = () => {
   const navigate = useNavigate();
   const searchTerm = useSelector((state) => state.movies.searchTerm);
+  const key = useSelector((state) => state.movies.key);
+  const value = useSelector((state) => state.movies.value);
   const movies = useSelector((state) => state.movies.movies);
   const status = useSelector((state) => state.movies.status);
+  const dispatch = useDispatch();
 
-  const [filterData, setFilterData] = useState({ key: "", value: "" });
   const [filteredMovies, setFilteredMovies] = useState(movies);
   const [boxHeight, setBoxHeight] = useState(window.innerHeight);
 
-  const handleFilterData = (key, value) => {
-    setFilterData({ key, value });
+  const handleFilterData = (attkey, attvalue) => {
+    dispatch(setKeyValue({ key: attkey, value: attvalue }));
   };
 
+
   useEffect(() => {
+    
     let filtered = movies;
 
     if (searchTerm) {
@@ -32,23 +32,18 @@ const Movies = () => {
       );
     }
 
-    if (filterData.key && filterData.value) {
-      filtered = filtered.filter(
-        (movie) => movie[filterData.key] === filterData.value
-      );
+    if (key && value) {
+      filtered = filtered.filter((movie) => movie[key] === value);
     }
 
     setFilteredMovies(filtered);
-
-    console.log(searchTerm);
-  }, [movies, searchTerm, filterData]);
+  }, [movies, searchTerm, key, value]);
 
   useEffect(() => {
     if (status === "failed") {
       navigate("/error");
     }
   }, [status, navigate]);
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,7 +108,7 @@ const Movies = () => {
             <Box
               key={index}
               sx={{
-                marginTop:2,
+                marginTop: 2,
                 color: "white",
                 "&:hover": {
                   backgroundColor: "#333",
@@ -126,6 +121,7 @@ const Movies = () => {
                 id={`genre-${index}`}
                 name={`genre-${index}`}
                 value={genre}
+                checked={value === genre}
                 onChange={(e) =>
                   handleFilterData("genre", e.target.checked ? genre : "")
                 }

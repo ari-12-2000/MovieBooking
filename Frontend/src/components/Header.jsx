@@ -24,8 +24,7 @@ const Header = () => {
 
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
-  
-  const [disableSearchbox, setDisableSearchbox] = useState(false);
+  const searchTerm = useSelector((state) => state.movies.searchTerm);
   
 
   const dispatch = useDispatch();
@@ -51,26 +50,19 @@ const Header = () => {
       default:
         setValue(false);
     }
-    setDisableSearchbox(
-      location.pathname !== "/movies" && location.pathname !== "/"
-    );
-
+  
 
     setIsErrorPage(location.pathname === "/error");
-  }, [
-    location.pathname,
-    dispatch,
-    setSearchTerm,
-    setIsErrorPage,
-    setDisableSearchbox,
-  ]);
+  }, [location.pathname, setIsErrorPage]);
 
   const handleMovieSelect = useCallback(
     _.debounce((val) => {
       console.log(val);
-      dispatch(setSearchTerm(val)); 
+      dispatch(setSearchTerm(val));
       if (val && val.trim() !== "") {
-        const movie = movies.find((mov) => mov.title === val);
+        const movie = movies.find(
+          (mov) => mov.title.toLowerCase() === val.toLowerCase()
+        );
 
         if (isUserLoggedIn) {
           if (movie) navigate(`/booking/${movie._id}`);
@@ -169,12 +161,21 @@ const Header = () => {
 
   const handleChange = (e) => {
     let value = e.target.value.trim();
-    if (!value && location.pathname !== "/movies") return;
+    if (!value && location.pathname!=="/movies") return;
     dispatch(setSearchTerm(value));
     navigate("/movies");
+    console.log(value);
+    console.log(searchTerm);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyUp = (e) => {
+  let value=e.target.value.trim();
+    if (e.key === "Backspace" && !value) {
+     
+      dispatch(setSearchTerm(""));
+    if(location.pathname==="/movies")  
+      navigate("/movies");
+    }
     if (e.key === "Enter") {
       handleMovieSelect(e.target.value);
     }
@@ -188,7 +189,7 @@ const Header = () => {
             <MovieCreationIcon />
           </Link>
         </Box>
-        <Box width="50%" marginRight="auto" marginLeft="auto">
+        <Box width="50%" marginRight="auto" marginLeft="auto" >
           <Autocomplete
             onChange={(e, val) => handleMovieSelect(val)}
             sx={{
@@ -199,7 +200,7 @@ const Header = () => {
             }}
             freeSolo
             id="free-solo-2-demo"
-            disableClearable={!disableSearchbox}
+            disableClearable
             options={movies.map((option) => option.title)}
             renderInput={(params) => (
               <TextField
@@ -217,13 +218,12 @@ const Header = () => {
                   type: "search",
                 }}
                 onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                disabled={isErrorPage || disableSearchbox} // Disable the search box if current path is "/error"
-                
+                onKeyUp={handleKeyUp}
+                disabled={isErrorPage} // Disable the search box if current path is "/error"
               />
             )}
-            disabled={isErrorPage || disableSearchbox}
-          
+            disabled={isErrorPage}
+            
           />
         </Box>
         <Box display="flex">
