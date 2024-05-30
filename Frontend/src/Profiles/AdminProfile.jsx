@@ -21,7 +21,7 @@ const AdminProfile = () => {
   }, []);
 
   return (
-    <Box width="100%" display="flex" justifyContent="center" padding={3}>
+    <Box width="100%" height="100%" display="flex" justifyContent="center" padding={3}>
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
           <CircularProgress />

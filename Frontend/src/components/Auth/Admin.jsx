@@ -3,7 +3,7 @@ import AuthForm from "./AuthForm";
 import { sendAdminAuthRequest } from "../../api-helpers/api-helpers";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminActions } from "../../store";
+import { adminActions, userActions } from "../../store";
 
 
 const Admin = () => {
@@ -13,6 +13,7 @@ const Admin = () => {
 
   const onResRecieved = (data) => {
     dispatch(adminActions.login());
+    dispatch(userActions.logout());
     localStorage.setItem("adminId", data.id);
     localStorage.setItem("token", data.token);
     navigate("/");

@@ -42,13 +42,13 @@ const UserProfile = () => {
   };
 
   return (
-    <Box display="flex" flexDirection={{ xs: "column", md: "row" }} width="100%">
+    <Box display="flex" flexDirection={{ xs: "column", md: "row" }} width="100%" height="100%">
       {loading ? (
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
-          height="100vh"
+          height="100%"
           width="100%"
         >
           <CircularProgress />
