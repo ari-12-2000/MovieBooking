@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AuthForm from "./AuthForm";
 import { useDispatch } from "react-redux";
 import { sendUserAuthRequest } from "../../api-helpers/api-helpers"; //The correct syntax to move up one directory level is "../"
-import { userActions } from "../../store";
+import { adminActions, userActions } from "../../store";
 import { useNavigate } from "react-router-dom";
 //move to current directory= './'
 const Auth = () => {
@@ -10,7 +10,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onResReceived = (data) => {
-    
+    dispatch(adminActions.logout());
     dispatch(userActions.login());
 
     localStorage.setItem("userId", data.id);

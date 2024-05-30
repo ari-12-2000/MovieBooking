@@ -8,10 +8,8 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
-
-  const adminId = localStorage.getItem("adminId");
+ 
   return (
     <Card
       sx={{
@@ -19,7 +17,7 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
         width: 250,
         height: 350,
         borderRadius: 5,
-        padding:2,
+        padding: 2,
         "&:hover": { boxShadow: "10px 10px 20px #ccc" },
         overflow: "hidden",
         display: "flex",
@@ -46,7 +44,7 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
           {genre}
         </Typography>
       </CardContent>
-    { !adminId && <CardActions>
+      <CardActions>
         <Button
           component={Link}
           to={`/booking/${id}`}
@@ -57,7 +55,7 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
         >
           Book
         </Button>
-      </CardActions>}
+      </CardActions>
     </Card>
   );
 };

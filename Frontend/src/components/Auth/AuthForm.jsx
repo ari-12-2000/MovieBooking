@@ -39,7 +39,7 @@ const AuthForm = ({ onSubmit, isAdmin, error }) => {
         </IconButton>
       </Box>
       <Typography variant="h4" textAlign={"center"}>
-        {isSignup ? "Signup" : "Login"}
+       {isAdmin ? "Admin": "User"} {isSignup ? " Signup" : " Login"}
       </Typography>
       <form onSubmit={handleSubmit}>
         <Box

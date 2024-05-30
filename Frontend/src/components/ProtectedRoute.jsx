@@ -16,12 +16,11 @@ const ProtectedRoute = ({ children, requireAdmin }) => {
     return <Navigate to="/admin" />;
   }
 
-  if (!requireAdmin && !userId && !adminId ) {
+  if (!requireAdmin && !userId ) {
   
     return <Navigate to="/auth" />;
   }
- else if(!requireAdmin && !userId && adminId)
-     return  <Navigate to="/error" />
+
  
 
   return children;

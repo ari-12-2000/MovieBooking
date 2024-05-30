@@ -6,6 +6,7 @@ import {
   Typography,
   Grid,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,13 +15,14 @@ import { getMovieDetails, newBooking } from "../../api-helpers/api-helpers";
 const Booking = () => {
   const [movie, setMovie] = useState();
   const [inputs, setInputs] = useState({ seatNumber: "", date: "" });
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     getMovieDetails(id)
-      .then((res) => setMovie(res))
+      .then((res) => {setMovie(res); setLoading(false)})
       .catch((err) => console.log(err));
   }, [id]);
 
@@ -45,8 +47,17 @@ const Booking = () => {
 
   return (
     <Box padding={2}>
-    <Typography color="error">THIS PAGE IS NOT FOR ADMIN USERS </Typography>
-      {movie && (
+    {loading ? (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="200%"
+      >
+        <CircularProgress />
+      </Box>
+    ) : (
+      movie && (
         <>
           <Typography
             padding={3}
@@ -57,7 +68,7 @@ const Booking = () => {
             Book Tickets For Movie: {movie.title}
           </Typography>
           <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} >
               <Paper elevation={3}>
                 <img
                   src={movie.posterUrl}
@@ -66,7 +77,7 @@ const Booking = () => {
                     width: "100%",
                     height: "auto",
                     maxHeight: "70vh",
-                    objectFit: "cover",
+                    objectFit: "contain",
                     borderRadius: "8px",
                   }}
                 />
@@ -137,8 +148,9 @@ const Booking = () => {
             </Grid>
           </Grid>
         </>
-      )}
-    </Box>
+      )
+    )}
+  </Box>
   );
 };
 
