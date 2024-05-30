@@ -6,21 +6,20 @@ import { adminActions, fetchMovies, userActions } from "./store";
 
 function App() {
   const dispatch = useDispatch();
-  let searchTerm = "",
-    attribute = "",
-    attributeValue = "";
 
   useEffect(() => {
-    if (localStorage.getItem("userId")) {
+    const userId = localStorage.getItem("userId");
+    const adminId = localStorage.getItem("adminId");
+
+    if (userId) {
       dispatch(userActions.login());
-    } else if (localStorage.getItem("adminId")) {
+    } else if (adminId) {
       dispatch(adminActions.login());
     }
+
+    dispatch(fetchMovies());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchMovies());
-  }, []);
   return (
     <>
       <Header />
