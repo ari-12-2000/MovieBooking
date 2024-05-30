@@ -42,7 +42,7 @@ const UserProfile = () => {
   };
 
   return (
-    <Box display="flex" flexDirection={{ xs: "column", md: "row" }} width="100%" height="100%">
+    <Box display="flex" flexDirection={{ xs: "column", md: "row" }} width="100%" height="100%" padding={2}>
       {loading ? (
         <Box
           display="flex"

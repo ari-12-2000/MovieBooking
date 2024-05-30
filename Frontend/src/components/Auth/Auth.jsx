@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 //move to current directory= './'
 const Auth = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading]=useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onResReceived = (data) => {
@@ -16,18 +17,20 @@ const Auth = () => {
     localStorage.setItem("userId", data.id);
     console.log(data.id);
     navigate("/");
+    setLoading(false);
   };
   const getData = (data) => {
     sendUserAuthRequest(data.inputs, data.signup)
       .then(onResReceived)
       .catch((err) =>
-        setError("Invalid Input or inputs already used")
+       { setLoading(false);
+        setError("Invalid Input or inputs already used")}
       );
   };
 
   return (
     <div>
-      <AuthForm onSubmit={getData} isAdmin={false} error={error} />
+      <AuthForm onSubmit={getData} isAdmin={false} error={error} setLoading={setLoading} loading={loading}/>
     </div>
   );
 };

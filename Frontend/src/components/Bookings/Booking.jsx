@@ -37,15 +37,27 @@ const Booking = () => {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     newBooking({ ...inputs, movie: movie._id })
       .then(() => {
         navigate("/");
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         setError("Invalid Input or inputs already used");
       });
+  };
+
+  // Generate the current date in the format YYYY-MM-DD
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -56,8 +68,6 @@ const Booking = () => {
           justifyContent="center"
           alignItems="center"
           height="100%"
-         
-          
         >
           <CircularProgress />
         </Box>
@@ -128,6 +138,9 @@ const Booking = () => {
                         value={inputs.date}
                         onChange={handleChange}
                         fullWidth
+                        InputProps={{
+                          inputProps: { min: getCurrentDate() },
+                        }}
                       />
                       <Button
                         type="submit"

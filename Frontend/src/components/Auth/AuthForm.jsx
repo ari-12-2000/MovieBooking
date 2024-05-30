@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   FormLabel,
   IconButton,
@@ -11,7 +12,7 @@ import React, { useState } from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Link } from "react-router-dom";
 const labelStyle = { mt: 1, mb: 1 };
-const AuthForm = ({ onSubmit, isAdmin, error }) => {
+const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
 
   const [inputs, setInputs] = useState({
     name: "",
@@ -29,6 +30,7 @@ const AuthForm = ({ onSubmit, isAdmin, error }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     onSubmit({ inputs, signup: isAdmin ? false : isSignup });
   };
   return (
@@ -104,7 +106,20 @@ const AuthForm = ({ onSubmit, isAdmin, error }) => {
               {error}
             </Typography>
           )}
+
+          {loading && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          width="100%"
+        >
+          <CircularProgress />
         </Box>
+      )}
+        </Box>
+        
       </form>
     </Dialog>
   );

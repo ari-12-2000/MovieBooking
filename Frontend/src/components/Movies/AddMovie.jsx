@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   FormLabel,
   TextField,
   Typography,
@@ -18,6 +19,7 @@ const labelProps = {
 };
 const AddMovie = () => {
   const [error, setError] = useState('')
+  const [loading, setLoading]=useState(false);
   const [inputs, setInputs] = useState({
     title: "",
     genre: "",
@@ -36,6 +38,7 @@ const AddMovie = () => {
     }));
   };
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     console.log(inputs, actors);
     addMovie({ ...inputs, actors })
@@ -43,8 +46,9 @@ const AddMovie = () => {
         console.log(res);
         dispatch(fetchMovies());
         navigate("/");
+        setLoading(false);
       })
-      .catch((err) =>{ console.log(err.message); setError("Invalid Input or inputs already used")});
+      .catch((err) =>{ setLoading(false); setError("Invalid Input or inputs already used")});
   };
   return (
     <div>
@@ -142,7 +146,23 @@ const AddMovie = () => {
               {error}
             </Typography>
           )}
+
+          {loading && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          width="100%"
+          marginTop={2}
+        >
+          <CircularProgress />
         </Box>
+      )}
+        </Box>
+    
+         
+        
       </form>
     </div>
   );

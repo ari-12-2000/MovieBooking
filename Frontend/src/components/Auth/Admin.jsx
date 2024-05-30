@@ -9,6 +9,7 @@ import { adminActions, userActions } from "../../store";
 const Admin = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState("");
+  const [loading, setLoading]=useState(false);
   const navigate = useNavigate();
 
   const onResRecieved = (data) => {
@@ -17,18 +18,20 @@ const Admin = () => {
     localStorage.setItem("adminId", data.id);
     localStorage.setItem("token", data.token);
     navigate("/");
+    setLoading(false);
   };
 
   const getData = (data) => {
     sendAdminAuthRequest(data.inputs)
       .then(onResRecieved)
-      .catch((err) => setError("Invalid Input or inputs already used"));
+      .catch((err) => { setLoading(false);
+        setError("Invalid Input or inputs already used")});
       
   };
 
   return (
     <div>
-      <AuthForm onSubmit={getData} isAdmin={true} error={error} />
+      <AuthForm onSubmit={getData} isAdmin={true} error={error} setLoading={setLoading} loading={loading}/>
     </div>
   );
 };
