@@ -14,8 +14,8 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
     <Card
       sx={{
         margin: 2,
-        width: 250,
-        height: 350,
+        width: "auto",
+        height: "auto",
         borderRadius: 5,
         padding: 2,
         "&:hover": { boxShadow: "10px 10px 20px #ccc" },
@@ -29,7 +29,7 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
         alt={title}
         style={{
           width: "100%",
-          height: "50%",
+          height: "100%",
           objectFit: "cover",
         }}
       />
