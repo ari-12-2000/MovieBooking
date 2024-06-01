@@ -64,7 +64,7 @@ const Movies = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="200%"
+        height="100vh"
       >
         <CircularProgress />
       </Box>

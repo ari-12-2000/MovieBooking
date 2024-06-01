@@ -30,15 +30,16 @@ const HomePage = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
+      border="1px solid black"
     >
-      <Box width="80%" height="66vh">
+      <Box width="auto" height="80vh">
         <img
           src="https://i.ytimg.com/vi/bweRG6WueuM/maxresdefault.jpg"
           alt="Brahmastra"
           style={{
             height: "100%",
             width: "100%",
-            objectFit: "cover",
+            objectFit: "contain",
           }}
         />
       </Box>
@@ -47,13 +48,7 @@ const HomePage = () => {
         Latest Releases
       </Typography>
 
-      <Box
-        display="flex"
-        justifyContent="center"
-        flexWrap="wrap"
-        gap={2}
-        width="80%"
-      >
+      <Box display="flex" flexWrap="wrap" justifyContent={"center"} width="80%" gap={4} > 
         {movies &&
           movies.slice(0, 4).map((movie, index) => (
             <MovieItem
@@ -65,8 +60,8 @@ const HomePage = () => {
               key={index}
             />
           ))}
-      </Box>
-
+    
+          </Box>
       <Button
         component={Link}
         to="/movies"
