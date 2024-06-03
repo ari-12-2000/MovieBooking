@@ -26,7 +26,9 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
       <img
         src={posterUrl}
         alt={title}
-       
+       height="100%"
+       width="100%"
+       object-fit="cover"
         
       />
       <CardContent >

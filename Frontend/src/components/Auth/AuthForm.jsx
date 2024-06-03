@@ -7,19 +7,20 @@ import {
   IconButton,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import React, { useState } from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Link } from "react-router-dom";
 const labelStyle = { mt: 1, mb: 1 };
-const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
 
+const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
+  const isMobile = useMediaQuery("(max-width:639px)");
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
     password: "",
   });
-
 
   const [isSignup, setIsSignup] = useState(false);
   const handleChange = (e) => {
@@ -34,24 +35,31 @@ const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
     onSubmit({ inputs, signup: isAdmin ? false : isSignup });
   };
   return (
-    <Dialog PaperProps={{ style: { borderRadius: 20 } }} open={true}>
-      <Box sx={{ ml: "auto", padding: 1 }}>
-        <IconButton LinkComponent={Link} to="/">
-          <CloseRoundedIcon />
-        </IconButton>
-      </Box>
+    <Dialog
+      fullScreen={isMobile}
+      sx={{
+        ".MuiDialog-paper": {
+          borderRadius: { md: "20px" },
+        },
+      }}
+      open={true}
+    >
+      <IconButton sx={{ ml: "auto", padding: 2 }} LinkComponent={Link} to="/">
+        <CloseRoundedIcon />
+      </IconButton>
+
       <Typography variant="h4" textAlign={"center"}>
-       {isAdmin ? "Admin": "User"} {isSignup ? " Signup" : " Login"}
+        {isAdmin ? "Admin" : "User"} {isSignup ? " Signup" : " Login"}
       </Typography>
       <form onSubmit={handleSubmit}>
         <Box
-          padding={6}
           display={"flex"}
           justifyContent={"center"}
           flexDirection="column"
-          width={400}
           margin="auto"
           alignContent={"center"}
+          sx={{ padding: { xs: 3, md: 6 } ,width:{  md: 400 }}}
+          
         >
           {!isAdmin && isSignup && (
             <>
@@ -108,18 +116,18 @@ const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
           )}
 
           {loading && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          width="100%"
-        >
-          <CircularProgress />
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height="100%"
+              width="100%"
+              marginTop={2}
+            >
+              <CircularProgress />
+            </Box>
+          )}
         </Box>
-      )}
-        </Box>
-        
       </form>
     </Dialog>
   );

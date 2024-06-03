@@ -51,15 +51,17 @@ const AddMovie = () => {
       .catch((err) =>{ setLoading(false); setError("Invalid Input or inputs already used")});
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+  
+      <form onSubmit={handleSubmit} >
         <Box
-          width={"50%"}
-          padding={10}
+          width={{xs:"100%", sm:"50%"}}
+          padding={5}
           margin="auto"
           display={"flex"}
           flexDirection="column"
           boxShadow={"10px 10px 20px #ccc"}
+          sx={{ boxSizing: 'border-box' }} 
+          
         >
           <Typography textAlign={"center"} variant="h5" fontFamily={"verdana"}>
             Add New Movie
@@ -71,6 +73,7 @@ const AddMovie = () => {
             name="title"
             variant="standard"
             margin="normal"
+            
           />
           <FormLabel sx={labelProps}>Genre</FormLabel>
           <TextField
@@ -79,6 +82,7 @@ const AddMovie = () => {
             name="genre"
             variant="standard"
             margin="normal"
+            width="70%"
           />
           <FormLabel sx={labelProps}>Poster URL</FormLabel>
           <TextField
@@ -87,6 +91,7 @@ const AddMovie = () => {
             name="posterUrl"
             variant="standard"
             margin="normal"
+            width="70%"
           />
           <FormLabel sx={labelProps}>Release Date</FormLabel>
           <TextField
@@ -96,6 +101,7 @@ const AddMovie = () => {
             name="releaseDate"
             variant="standard"
             margin="normal"
+            width="70%"
           />
           <FormLabel sx={labelProps}>Actor</FormLabel>
           <Box display={"flex"}>
@@ -105,6 +111,7 @@ const AddMovie = () => {
               onChange={(e) => setActor(e.target.value)}
               variant="standard"
               margin="normal"
+              width="70%"
             />
             <Button
               onClick={() => {
@@ -132,6 +139,7 @@ const AddMovie = () => {
             variant="contained"
             sx={{
               width: "30%",
+              minWidth:"200px",
               margin: "auto",
               bgcolor: "#2b2d42",
               ":hover": {
@@ -164,7 +172,7 @@ const AddMovie = () => {
          
         
       </form>
-    </div>
+    
   );
 };
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MovieItem from "./MovieItem";
 import { useDispatch, useSelector } from "react-redux";
-import { setKeyValue, fetchMovies } from "../../store";
+import { setKeyValue } from "../../store";
+import { HiAdjustmentsHorizontal } from "react-icons/hi2";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Movies = () => {
   const navigate = useNavigate();
@@ -13,17 +15,14 @@ const Movies = () => {
   const movies = useSelector((state) => state.movies.movies);
   const status = useSelector((state) => state.movies.status);
   const dispatch = useDispatch();
-
   const [filteredMovies, setFilteredMovies] = useState(movies);
-  const [boxHeight, setBoxHeight] = useState(window.innerHeight);
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
 
   const handleFilterData = (attkey, attvalue) => {
     dispatch(setKeyValue({ key: attkey, value: attvalue }));
   };
 
-
   useEffect(() => {
-    
     let filtered = movies;
 
     if (searchTerm) {
@@ -45,18 +44,9 @@ const Movies = () => {
     }
   }, [status, navigate]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const newHeight = Math.max(window.innerHeight, window.innerHeight + window.scrollY);
-      setBoxHeight(newHeight);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const handleToggleFilter = () => {
+    setIsFilterVisible((prev) => !prev);
+  };
 
   if (status === "loading") {
     return (
@@ -74,36 +64,37 @@ const Movies = () => {
   return (
     <Box display="flex">
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        padding={6}
-        sx={{ backgroundColor: "black", width: "20%", height: `${boxHeight}px` }}
+        sx={{
+          backgroundColor: "black",
+          width: { xs: isFilterVisible ? "200px" : "0", md: "20%" },
+          overflow: "hidden",
+          transition: "width 0.3s",
+          display: "flex",
+          zIndex: { xs: isFilterVisible && 2 },
+          position: "fixed",
+          height: "100vh",
+          
+        }}
+        justifyContent={"center"}
       >
-        <Button
+        <IconButton
+          onClick={handleToggleFilter}
           sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            width: "100%",
+            position: "absolute",
+            top: 0,
+            right: 0,
             color: "white",
-            border: "none",
-            backgroundColor: "inherit",
-            textTransform: "none",
-            padding: "10px 20px",
-            "&:hover": {
-              backgroundColor: "inherit",
+            display: { xs: isFilterVisible && "block", md: "none" },
+            "&:focus": {
+              outline: "none",
             },
           }}
         >
-          <Typography>Genre</Typography>
-        </Button>
-        <Box
-          sx={{
-            width: "100%",
-            backgroundColor: "black",
-            color: "white",
-          }}
-        >
+          <CloseRoundedIcon />
+        </IconButton>
+
+        <Box marginTop={6}>
+          <Typography color="white">Genre</Typography>
           {["Action", "Comedy", "Drama"].map((genre, index) => (
             <Box
               key={index}
@@ -113,10 +104,10 @@ const Movies = () => {
                 "&:hover": {
                   backgroundColor: "#333",
                 },
+                cursor: "pointer",
               }}
             >
               <input
-                style={{ marginLeft: "8px" }}
                 type="checkbox"
                 id={`genre-${index}`}
                 name={`genre-${index}`}
@@ -133,13 +124,13 @@ const Movies = () => {
           ))}
         </Box>
       </Box>
-      <Box marginTop={1} width="80%">
+      <Box marginTop={1} sx={{ width: { md: "80%" }, marginLeft: "auto" }}>
         <Typography
           margin="auto"
           variant="h4"
           padding={2}
           sx={{
-            width: "40%",
+            width: { xs: "90%", md: "40%" },
             bgcolor: "#900C3F",
             color: "white",
             textAlign: "center",
@@ -147,6 +138,20 @@ const Movies = () => {
         >
           All Movies
         </Typography>
+        <Box
+          border="1px solid black"
+          borderRadius={1}
+          padding={0.2}
+          marginLeft={2}
+          marginTop={2.5}
+          sx={{
+            display: { xs: "inline-block", md: "none" },
+            cursor: "pointer",
+          }}
+          onClick={handleToggleFilter}
+        >
+          <HiAdjustmentsHorizontal style={{ fontSize: "2rem" }} />
+        </Box>
         <Box
           display="flex"
           justifyContent="center"

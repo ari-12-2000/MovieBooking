@@ -42,14 +42,13 @@ const UserProfile = () => {
   };
 
   return (
-    <Box display="flex" flexDirection={{ xs: "column", md: "row" }} width="100%" height="100%" padding={2}>
+    <Box display="flex" flexDirection={{ xs: "column", md: "row" }}>
       {loading ? (
         <Box
           display="flex"
           justifyContent="center"
-          alignItems="center"
-          height="100%"
-          width="100%"
+          marginTop={4}
+          width={"100%"}
         >
           <CircularProgress />
         </Box>
@@ -60,13 +59,11 @@ const UserProfile = () => {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              width={{ xs: "100%", md: "30%" }}
-              padding={3}
+              width={{ md: "30%" }}
             >
               <AccountCircleIcon sx={{ fontSize: "10rem" }} />
               <Typography
                 padding={1}
-                width={"auto"}
                 textAlign={"center"}
                 border={"1px solid #ccc"}
                 borderRadius={6}
@@ -77,7 +74,6 @@ const UserProfile = () => {
               <Typography
                 mt={1}
                 padding={1}
-                width={"auto"}
                 textAlign={"center"}
                 border={"1px solid #ccc"}
                 borderRadius={6}
@@ -88,10 +84,10 @@ const UserProfile = () => {
           )}
           {bookings && (
             <Box
+              marginTop={1}
               width={{ xs: "100%", md: "70%" }}
               display="flex"
               flexDirection="column"
-              padding={3}
             >
               <Typography
                 variant="h3"
@@ -101,12 +97,7 @@ const UserProfile = () => {
               >
                 Bookings
               </Typography>
-              <Box
-                margin={"auto"}
-                display="flex"
-                flexDirection="column"
-                width="80%"
-              >
+              <Box display="flex" flexDirection="column" padding={1}>
                 <List>
                   {bookings.map((booking, index) => (
                     <ListItem
@@ -114,23 +105,14 @@ const UserProfile = () => {
                       sx={{
                         bgcolor: "#00d386",
                         color: "white",
-                        textAlign: "center",
-                        margin: 1,
+                        display: "flex",
+                        flexDirection: { xs: "column", md: "row" },
+                        marginBottom: 2,
                       }}
                     >
-                      <ListItemText
-                        sx={{ margin: 1, width: "auto", textAlign: "left" }}
-                      >
-                        Movie: {booking.movie.title}
-                      </ListItemText>
-                      <ListItemText
-                        sx={{ margin: 1, width: "auto", textAlign: "left" }}
-                      >
-                        Seat: {booking.seatNumber}
-                      </ListItemText>
-                      <ListItemText
-                        sx={{ margin: 1, width: "auto", textAlign: "left" }}
-                      >
+                      <ListItemText>Movie: {booking.movie.title}</ListItemText>
+                      <ListItemText>Seat: {booking.seatNumber}</ListItemText>
+                      <ListItemText>
                         Date: {new Date(booking.date).toDateString()}
                       </ListItemText>
                       <IconButton

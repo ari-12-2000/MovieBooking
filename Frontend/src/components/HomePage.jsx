@@ -7,11 +7,10 @@ import MovieItem from "./Movies/MovieItem";
 const HomePage = () => {
   const movies = useSelector((state) => state.movies.movies);
   const status = useSelector((state) => state.movies.status);
-  const searchTerm = useSelector((state) => state.movies.searchTerm);
   const navigate = useNavigate();
-  
   const isLoading = status === "loading";
   const isError = status === "failed";
+  
 
   const renderLoader = () => (
     <Box
@@ -30,16 +29,16 @@ const HomePage = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      border="1px solid black"
+      
     >
-      <Box width="auto" height="80vh">
+      <Box width="auto" height="80vh" >
         <img
           src="https://i.ytimg.com/vi/bweRG6WueuM/maxresdefault.jpg"
           alt="Brahmastra"
           style={{
             height: "100%",
             width: "100%",
-            objectFit: "contain",
+            objectFit: "cover",
           }}
         />
       </Box>
