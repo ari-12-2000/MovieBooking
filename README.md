@@ -5,6 +5,5 @@
 4. Enhanced the UI with Material-UI, React Router for SPA functionality, and Redux Toolkit for state management. Implemented movie search and filter features.
    
 
-Admin credential- email- Aritra@admin.com password-1234567
-Link- https://moviebookingwebapp.netlify.app/
+
 
