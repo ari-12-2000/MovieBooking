@@ -66,7 +66,7 @@ const Movies = () => {
       <Box
         sx={{
           backgroundColor: "black",
-          width: { xs: isFilterVisible ? "40%" : "0", md: "20%" },
+          width: { xs: isFilterVisible ? "max(40%,200px)" : "0", md: "20%" },
           overflow: "hidden",
           transition: "width 0.3s",
           display: "flex",
