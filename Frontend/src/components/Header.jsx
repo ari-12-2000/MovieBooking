@@ -62,8 +62,9 @@ const Header = () => {
 
   const handleMovieSelect = useCallback(
     //if pressed enter or selected movie name from autocomplete section, this functionis called
+    
     _.debounce((val) => {
-      console.log(val);
+     
       dispatch(setSearchTerm(val));
       if (val && val.trim() !== "") {
         const movie = movies.find(
@@ -232,27 +233,18 @@ const Header = () => {
   };
 
   const handleChange = (e) => {
+    
     //when some alphabets or white spaces are entered in the search box this function is called
     let value = e.target.value.trim();
-    if (!value && location.pathname !== "/movies") return;
+    if (!value && !searchTerm) return; //if current value is blank and last searchTerm which means nothing was searched and currently nothing is searched
     dispatch(setSearchTerm(value));
-    navigate("/movies"); // to load the movies page such that it shows items according to current search term component whenever searchterm is updated
+    if(location.pathname!=="/movies")
+     navigate("/movies"); // to load the movies page such that it shows items according to current search term component whenever searchterm is updated
     console.log(value);
     console.log(searchTerm);
   };
 
-  const handleKeyUp = (e) => {
-    //when enter, backspace key is pressed we need this function to handle that state
-    let value = e.target.value.trim();
-    if (e.key === "Backspace" && !value) {
-      // when search box is cleared with backspace key
-      dispatch(setSearchTerm(""));
-      if (location.pathname === "/movies") navigate("/movies"); // to load the movies such that it shows items according to current search term component whenever searchterm is updated
-    }
-    if (e.key === "Enter") {
-      handleMovieSelect(e.target.value);
-    }
-  };
+
 
   return (
     <AppBar position="sticky" sx={{ bgcolor: "#2b2d42" }}>
@@ -272,20 +264,16 @@ const Header = () => {
         >
           <MenuIcon />
         </IconButton>
-       
-          <Link to="/" style={{ color: "white", marginRight:20 }}>
-            <MovieCreationIcon />
-          </Link>
-        
-        <Box
-          width={{xs:"100%", sm:"300px"}}
-          margin="auto"
-         
-        >
+
+        <Link to="/" style={{ color: "white", marginRight: 20 }}>
+          <MovieCreationIcon />
+        </Link>
+
+        <Box width={{ xs: "100%", sm: "300px" }} margin="auto">
           <Autocomplete
             onChange={(e, val) => handleMovieSelect(val)}
             sx={{
-              width:"100%",
+              width: "100%",
               borderRadius: 10,
               pointerEvents: isErrorPage ? "none" : "auto", // Disable the search box if current path is "/error"
             }}
@@ -309,7 +297,6 @@ const Header = () => {
                   type: "search",
                 }}
                 onChange={handleChange}
-                onKeyUp={handleKeyUp}
                 disabled={isErrorPage} // Disable the search box if current path is "/error"
               />
             )}
@@ -368,7 +355,7 @@ const Header = () => {
             </List>
           </Drawer>
         ) : (
-          <Box display="flex" >
+          <Box display="flex">
             <Tabs
               onChange={handleTabChange}
               value={value}

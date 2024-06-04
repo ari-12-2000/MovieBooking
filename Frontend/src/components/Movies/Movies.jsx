@@ -122,7 +122,7 @@ const Movies = () => {
           ))}
         </Box>
       </Box>
-      <Box marginTop={1} sx={{ width: { md: "80%" }, marginLeft: "auto" }}>
+      <Box marginTop={1} sx={{ width: { md: "80%", xs:"100%"}, marginLeft: {md:"auto"} }}>
         <Typography
           margin="auto"
           variant="h4"
