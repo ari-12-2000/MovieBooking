@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MovieItem from "./MovieItem";
@@ -15,14 +15,13 @@ const Movies = () => {
   const movies = useSelector((state) => state.movies.movies);
   const status = useSelector((state) => state.movies.status);
   const dispatch = useDispatch();
-  const [filteredMovies, setFilteredMovies] = useState(movies);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
   const handleFilterData = (attkey, attvalue) => {
     dispatch(setKeyValue({ key: attkey, value: attvalue }));
   };
 
-  useEffect(() => {
+  const filteredMovies = useMemo(() => {
     let filtered = movies;
 
     if (searchTerm) {
@@ -35,7 +34,7 @@ const Movies = () => {
       filtered = filtered.filter((movie) => movie[key] === value);
     }
 
-    setFilteredMovies(filtered);
+    return filtered;
   }, [movies, searchTerm, key, value]);
 
   useEffect(() => {
@@ -73,7 +72,6 @@ const Movies = () => {
           zIndex: { xs: isFilterVisible && 2 },
           position: "fixed",
           height: "100vh",
-          
         }}
         justifyContent={"center"}
       >
