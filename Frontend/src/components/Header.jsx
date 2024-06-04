@@ -236,7 +236,7 @@ const Header = () => {
     let value = e.target.value.trim();
     if (!value && location.pathname !== "/movies") return;
     dispatch(setSearchTerm(value));
-    navigate("/movies"); // to load the movies such that it shows items according to current search term component whenever searchterm is updated
+    navigate("/movies"); // to load the movies page such that it shows items according to current search term component whenever searchterm is updated
     console.log(value);
     console.log(searchTerm);
   };
