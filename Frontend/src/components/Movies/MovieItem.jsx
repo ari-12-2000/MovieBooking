@@ -14,13 +14,12 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
     <Card
       sx={{
         marginTop: 2,
-        padding:1,
+        
         borderRadius: 5,
         "&:hover": { boxShadow: "10px 10px 20px #ccc" },
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-       
       }}
     >
       <img
@@ -42,14 +41,14 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
           {genre}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions >
         <Button
           component={Link}
           to={`/booking/${id}`}
-        
+          fullWidth 
           size="small"
           variant="contained"
-          fullWidth
+          sx={{margin:"6px 10px"}}
          
         >
           Book

@@ -54,7 +54,7 @@ const AddMovie = () => {
   
       <form onSubmit={handleSubmit} >
         <Box
-          width={{xs:"100%", sm:"50%"}}
+          width={{xs:"100%", sm:"max(50%, 600px)"}}
           padding={5}
           margin="auto"
           display={"flex"}

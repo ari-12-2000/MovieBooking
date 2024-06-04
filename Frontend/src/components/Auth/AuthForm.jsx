@@ -35,11 +35,11 @@ const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
     onSubmit({ inputs, signup: isAdmin ? false : isSignup });
   };
   return (
-    <Dialog
+    <Dialog 
       fullScreen={isMobile}
       sx={{
         ".MuiDialog-paper": {
-          borderRadius: { md: "20px" },
+          borderRadius: { sm: "20px" },
         },
       }}
       open={true}
@@ -58,7 +58,7 @@ const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
           flexDirection="column"
           margin="auto"
           alignContent={"center"}
-          sx={{ padding: { xs: 3, md: 6 } ,width:{  md: 400 }}}
+          sx={{ padding: { xs: 3, sm: 6 } ,width:{  sm: 400 }}}
           
         >
           {!isAdmin && isSignup && (

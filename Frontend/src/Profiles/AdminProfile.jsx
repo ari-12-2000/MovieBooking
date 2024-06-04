@@ -1,4 +1,12 @@
-import { Box, Grid, List, ListItem, ListItemText, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getAdminById } from "../api-helpers/api-helpers";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -21,15 +29,34 @@ const AdminProfile = () => {
   }, []);
 
   return (
-    <Box width="100%" height="100%" display="flex" justifyContent="center" padding={3}>
+    <Box
+      height="100%"
+      display="flex"
+      justifyContent="center"
+      padding={3}
+      boxSizing={"border-box"}
+    >
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100%"
+          marginTop={3}
+        >
           <CircularProgress />
         </Box>
       ) : (
         admin && (
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4} display="flex" flexDirection="column" alignItems="center">
+            <Grid
+              item
+              xs={12}
+              md={4}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
               <AccountCircleIcon sx={{ fontSize: "10rem" }} />
               <Typography
                 mt={1}
@@ -42,14 +69,25 @@ const AdminProfile = () => {
                 Email: {admin.email}
               </Typography>
             </Grid>
-            <Grid item xs={12} md={8} display="flex" flexDirection="column" alignItems="center">
+            <Grid
+              item
+              xs={12}
+              md={8}
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
               {admin.addedMovies.length > 0 && (
                 <>
-                  <Typography variant="h3" fontFamily="verdana" textAlign="center" padding={2}>
+                  <Typography
+                    variant="h3"
+                    fontFamily="verdana"
+                    textAlign="center"
+                  >
                     Added Movies
                   </Typography>
-                  <Box width="100%" display="flex" justifyContent="center">
-                    <List sx={{ width: "80%" }}>
+                  <Box width="100%">
+                    <List>
                       {admin.addedMovies.map((movie, index) => (
                         <ListItem
                           key={index}
@@ -60,7 +98,9 @@ const AdminProfile = () => {
                             margin: 1,
                           }}
                         >
-                          <ListItemText sx={{ margin: 1, width: "auto", textAlign: "left" }}>
+                          <ListItemText
+                            sx={{ margin: 1, width: "auto", textAlign: "left" }}
+                          >
                             Movie: {movie.title}
                           </ListItemText>
                         </ListItem>
