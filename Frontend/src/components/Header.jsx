@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   AppBar,
   Autocomplete,
@@ -23,8 +23,8 @@ import { userActions, adminActions, setSearchTerm } from "../store/index";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const Header = () => {
+  const inputRef=useRef(null);
   const navigate = useNavigate();
-
   const location = useLocation();
   const [value, setValue] = useState(0);
   const [isErrorPage, setIsErrorPage] = useState(
@@ -56,31 +56,27 @@ const Header = () => {
       default:
         setValue(false);
     }
-
+    
+    if(location.pathname==="/" && searchTerm)
+        
     setIsErrorPage(location.pathname === "/error");
   }, [location.pathname, setIsErrorPage]);
 
-  const handleMovieSelect = useCallback(
-    //if pressed enter or selected movie name from autocomplete section, this functionis called
-    
-    _.debounce((val) => {
-     
-      dispatch(setSearchTerm(val));
-      if (val && val.trim() !== "") {
-        const movie = movies.find(
-          (mov) => mov.title.toLowerCase() === val.toLowerCase()
-        );
+  const handleMovieSelect = (val) => {
+    dispatch(setSearchTerm(val));
+    if (val && val.trim() !== "") {
+      const movie = movies.find(
+        (mov) => mov.title.toLowerCase() === val.toLowerCase()
+      );
 
-        if (isUserLoggedIn) {
-          if (movie) navigate(`/booking/${movie._id}`);
-          else navigate("/error");
-        } else {
-          navigate("/auth");
-        }
+      if (isUserLoggedIn) {
+        if (movie) navigate(`/booking/${movie._id}`);
+        else navigate("/error");
+      } else {
+        navigate("/auth");
       }
-    }, 300),
-    [movies, isUserLoggedIn, navigate]
-  );
+    }
+  };
 
   const handleTabChange = (event, newValue) => {
     //whenever tab is changed a new value is set and due to navlink the tab with that corresponding value is highlighted
@@ -270,12 +266,12 @@ const Header = () => {
         </Link>
 
         <Box width={{ xs: "100%", sm: "300px" }} margin="auto">
-          <Autocomplete
+        <Autocomplete
             onChange={(e, val) => handleMovieSelect(val)}
             sx={{
               width: "100%",
               borderRadius: 10,
-              pointerEvents: isErrorPage ? "none" : "auto", // Disable the search box if current path is "/error"
+              pointerEvents: isErrorPage ? "none" : "auto",
             }}
             freeSolo
             id="free-solo-2-demo"
@@ -297,7 +293,8 @@ const Header = () => {
                   type: "search",
                 }}
                 onChange={handleChange}
-                disabled={isErrorPage} // Disable the search box if current path is "/error"
+                disabled={isErrorPage}
+                ref={inputRef}
               />
             )}
             disabled={isErrorPage}

@@ -22,6 +22,7 @@ const Admin = () => {
   };
 
   const getData = (data) => {
+    setLoading(true);
     sendAdminAuthRequest(data.inputs)
       .then(onResRecieved)
       .catch((err) => { setLoading(false);

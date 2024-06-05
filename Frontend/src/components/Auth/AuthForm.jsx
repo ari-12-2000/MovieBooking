@@ -14,7 +14,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Link } from "react-router-dom";
 const labelStyle = { mt: 1, mb: 1 };
 
-const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
+const AuthForm = ({ onSubmit, isAdmin, error, loading }) => {
   const isMobile = useMediaQuery("(max-width:639px)");
   const [inputs, setInputs] = useState({
     name: "",
@@ -31,7 +31,7 @@ const AuthForm = ({ onSubmit, isAdmin, error, setLoading, loading }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
+   
     onSubmit({ inputs, signup: isAdmin ? false : isSignup });
   };
   return (

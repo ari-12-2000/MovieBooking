@@ -20,6 +20,7 @@ const Auth = () => {
     setLoading(false);
   };
   const getData = (data) => {
+    setLoading(true);
     sendUserAuthRequest(data.inputs, data.signup)
       .then(onResReceived)
       .catch((err) =>

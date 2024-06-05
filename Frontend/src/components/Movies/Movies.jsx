@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MovieItem from "./MovieItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +51,11 @@ const Movies = () => {
 
   const handleToggleFilter = () => {
     setIsFilterVisible((prev) => !prev);
+  };
+
+  const handleClearFilters = () => {
+    // Dispatch action to clear filters
+    dispatch(setKeyValue({ key: "", value: "" }));
   };
 
   if (status === "loading") {
@@ -139,19 +150,23 @@ const Movies = () => {
         >
           All Movies
         </Typography>
-        <Box
-          border="1px solid black"
-          borderRadius={1}
-          padding={0.2}
-          marginLeft={2}
-          marginTop={2.5}
-          sx={{
-            display: { xs: "inline-block", md: "none" },
-            cursor: "pointer",
-          }}
-          onClick={handleToggleFilter}
-        >
-          <HiAdjustmentsHorizontal style={{ fontSize: "2rem" }} />
+        <Box display="flex" padding={1}  justifyContent={{xs:"space-between", md:"flex-end"}}>
+          <Box
+            border="1px solid black"
+            borderRadius={1}
+            padding={0.2}
+            marginLeft={2}           
+            sx={{
+              display: { md: "none" },
+              cursor: "pointer",
+            }}
+            onClick={handleToggleFilter}
+          >
+            <HiAdjustmentsHorizontal style={{ fontSize: "2rem" }} />
+          </Box>
+          <Button marginLeft="auto" variant="contained" onClick={handleClearFilters} border="1px solid black">
+            Clear Filters
+          </Button>
         </Box>
         <Box
           display="flex"
