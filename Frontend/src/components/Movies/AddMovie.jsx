@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Checkbox,
-  CircularProgress,
   FormLabel,
   TextField,
   Typography,
@@ -12,6 +11,8 @@ import { addMovie } from "../../api-helpers/api-helpers";
 import { useNavigate } from "react-router-dom";
 import { fetchMovies } from "../../store";
 import { useDispatch } from "react-redux";
+import useLoader from "../../hooks/useLoader";
+import Loader from "../Loader";
 
 const labelProps = {
   mt: 1,
@@ -19,7 +20,11 @@ const labelProps = {
 };
 const AddMovie = () => {
   const [error, setError] = useState('')
-  const [loading, setLoading]=useState(false);
+  const {
+    loading,
+    showLoader,
+    hideLoader,
+  }=useLoader();
   const [inputs, setInputs] = useState({
     title: "",
     genre: "",
@@ -38,17 +43,15 @@ const AddMovie = () => {
     }));
   };
   const handleSubmit = (e) => {
-    setLoading(true);
     e.preventDefault();
-    console.log(inputs, actors);
+    showLoader();
     addMovie({ ...inputs, actors })
       .then((res) => {
-        console.log(res);
         dispatch(fetchMovies());
         navigate("/");
-        setLoading(false);
+        hideLoader();
       })
-      .catch((err) =>{ setLoading(false); setError("Invalid Input or inputs already used")});
+      .catch((err) =>{hideLoader(); setError("Invalid Input or inputs already used")});
   };
   return (
   
@@ -156,16 +159,7 @@ const AddMovie = () => {
           )}
 
           {loading && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          width="100%"
-          marginTop={2}
-        >
-          <CircularProgress />
-        </Box>
+       <Loader/>
       )}
         </Box>
     

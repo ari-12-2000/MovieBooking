@@ -18,12 +18,10 @@ import {
 import MovieCreationIcon from "@mui/icons-material/MovieCreation";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash"; // Import lodash for debounce functionality
 import { userActions, adminActions, setSearchTerm } from "../store/index";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const Header = () => {
-  const inputRef=useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = useState(0);
@@ -56,9 +54,7 @@ const Header = () => {
       default:
         setValue(false);
     }
-    
-    if(location.pathname==="/" && searchTerm)
-        
+
     setIsErrorPage(location.pathname === "/error");
   }, [location.pathname, setIsErrorPage]);
 
@@ -229,18 +225,12 @@ const Header = () => {
   };
 
   const handleChange = (e) => {
-    
     //when some alphabets or white spaces are entered in the search box this function is called
     let value = e.target.value.trim();
     if (!value && !searchTerm) return; //if current value is blank and last searchTerm which means nothing was searched and currently nothing is searched
     dispatch(setSearchTerm(value));
-    if(location.pathname!=="/movies")
-     navigate("/movies"); // to load the movies page such that it shows items according to current search term component whenever searchterm is updated
-    console.log(value);
-    console.log(searchTerm);
+    if (location.pathname !== "/movies") navigate("/movies"); // to load the movies page such that it shows items according to current search term component whenever searchterm is updated
   };
-
-
 
   return (
     <AppBar position="sticky" sx={{ bgcolor: "#2b2d42" }}>
@@ -266,7 +256,7 @@ const Header = () => {
         </Link>
 
         <Box width={{ xs: "100%", sm: "300px" }} margin="auto">
-        <Autocomplete
+          <Autocomplete
             onChange={(e, val) => handleMovieSelect(val)}
             sx={{
               width: "100%",
@@ -294,7 +284,6 @@ const Header = () => {
                 }}
                 onChange={handleChange}
                 disabled={isErrorPage}
-                ref={inputRef}
               />
             )}
             disabled={isErrorPage}

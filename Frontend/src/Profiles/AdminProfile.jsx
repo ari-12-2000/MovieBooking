@@ -5,26 +5,32 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getAdminById } from "../api-helpers/api-helpers";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Loader from "../components/Loader";
+import useLoader from "../hooks/useLoader";
 
 const AdminProfile = () => {
   const [admin, setAdmin] = useState();
-  const [loading, setLoading] = useState(true);
+  const {
+    loading,
+    showLoader,
+    hideLoader,
+  } = useLoader();
 
   useEffect(() => {
+    showLoader();
     getAdminById()
       .then((res) => {
         console.log(res.admin);
         setAdmin(res.admin);
-        setLoading(false);
+        hideLoader();
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
+        hideLoader();
       });
   }, []);
 
@@ -37,15 +43,7 @@ const AdminProfile = () => {
       boxSizing={"border-box"}
     >
       {loading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-          marginTop={3}
-        >
-          <CircularProgress />
-        </Box>
+        <Loader/>
       ) : (
         admin && (
           <Grid container spacing={3}>

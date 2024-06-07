@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Dialog,
   FormLabel,
   IconButton,
@@ -12,10 +11,15 @@ import {
 import React, { useState } from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Link } from "react-router-dom";
+import useLoader from "../../hooks/useLoader";
+import Loader from "../Loader";
+
 const labelStyle = { mt: 1, mb: 1 };
 
 const AuthForm = ({ onSubmit, isAdmin, error, loading }) => {
+  console.log(loading);
   const isMobile = useMediaQuery("(max-width:639px)");
+  console.log(loading);
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
@@ -31,11 +35,11 @@ const AuthForm = ({ onSubmit, isAdmin, error, loading }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-   
+
     onSubmit({ inputs, signup: isAdmin ? false : isSignup });
   };
   return (
-    <Dialog 
+    <Dialog
       fullScreen={isMobile}
       sx={{
         ".MuiDialog-paper": {
@@ -58,8 +62,7 @@ const AuthForm = ({ onSubmit, isAdmin, error, loading }) => {
           flexDirection="column"
           margin="auto"
           alignContent={"center"}
-          sx={{ padding: { xs: 3, sm: 6 } ,width:{  sm: 400 }}}
-          
+          sx={{ padding: { xs: 3, sm: 6 }, width: { sm: 400 } }}
         >
           {!isAdmin && isSignup && (
             <>
@@ -115,18 +118,7 @@ const AuthForm = ({ onSubmit, isAdmin, error, loading }) => {
             </Typography>
           )}
 
-          {loading && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="100%"
-              width="100%"
-              marginTop={2}
-            >
-              <CircularProgress />
-            </Box>
-          )}
+          {loading && <Loader />}
         </Box>
       </form>
     </Dialog>

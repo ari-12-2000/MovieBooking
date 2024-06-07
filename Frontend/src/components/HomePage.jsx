@@ -1,28 +1,16 @@
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Button,Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { useEffect } from "react";
 import MovieItem from "./Movies/MovieItem";
+import Loader from "./Loader";
 
 const HomePage = () => {
   const movies = useSelector((state) => state.movies.movies);
   const status = useSelector((state) => state.movies.status);
   const navigate = useNavigate();
-  const isLoading = status === "loading";
   const isError = status === "failed";
   
-
-  const renderLoader = () => (
-    <Box
-      padding={2}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-    >
-      <CircularProgress />
-    </Box>
-  );
-
   const renderMovies = () => (
     <Box
       padding={2}
@@ -79,7 +67,7 @@ const HomePage = () => {
     }
   }, [isError, navigate]);
 
-  return isLoading ? renderLoader() : renderMovies();
+  return status === "loading" ? <Loader/> : renderMovies();
 };
 
 export default HomePage;

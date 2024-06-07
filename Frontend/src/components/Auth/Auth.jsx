@@ -4,10 +4,11 @@ import { useDispatch } from "react-redux";
 import { sendUserAuthRequest } from "../../api-helpers/api-helpers"; //The correct syntax to move up one directory level is "../"
 import { adminActions, userActions } from "../../store";
 import { useNavigate } from "react-router-dom";
+import useLoader from "../../hooks/useLoader";
 //move to current directory= './'
 const Auth = () => {
   const [error, setError] = useState("");
-  const [loading, setLoading]=useState(false);
+  const { showLoader, hideLoader, loading } = useLoader();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onResReceived = (data) => {
@@ -17,21 +18,21 @@ const Auth = () => {
     localStorage.setItem("userId", data.id);
     console.log(data.id);
     navigate("/");
-    setLoading(false);
+    hideLoader();
   };
   const getData = (data) => {
-    setLoading(true);
+    showLoader();
     sendUserAuthRequest(data.inputs, data.signup)
       .then(onResReceived)
       .catch((err) =>
-       { setLoading(false);
+       { hideLoader();
         setError("Invalid Input or inputs already used")}
       );
   };
 
   return (
     <div>
-      <AuthForm onSubmit={getData} isAdmin={false} error={error} setLoading={setLoading} loading={loading}/>
+      <AuthForm onSubmit={getData} isAdmin={false} error={error} loading={loading}/>
     </div>
   );
 };

@@ -12,25 +12,27 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import useLoader from "../hooks/useLoader";
+import Loader from "../components/Loader";
 
 const UserProfile = () => {
   const [bookings, setBookings] = useState();
   const [user, setUser] = useState();
-  const [loading, setLoading] = useState(true);
+  const { loading, showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
+    showLoader();
     Promise.all([getUserBooking(), getUserDetails()])
       .then(([bookingsRes, userRes]) => {
         setBookings(bookingsRes.bookings);
         setUser(userRes.user);
-        setLoading(false);
+        hideLoader();
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
+        hideLoader();
       });
   }, []);
 
@@ -42,16 +44,9 @@ const UserProfile = () => {
   };
 
   return (
-    <Box display="flex" flexDirection={{ xs: "column", md: "row" }}>
+    <Box display="flex" flexDirection={{ xs: "column", md: "row" }} >
       {loading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          marginTop={4}
-          width={"100%"}
-        >
-          <CircularProgress />
-        </Box>
+        <Loader />
       ) : (
         <>
           {user && (

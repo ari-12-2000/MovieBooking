@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
-  CircularProgress,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -59,16 +58,8 @@ const Movies = () => {
   };
 
   if (status === "loading") {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
+   return <Loader/>;
+
   }
 
   return (
@@ -150,12 +141,11 @@ const Movies = () => {
         >
           All Movies
         </Typography>
-        <Box display="flex" padding={1}  justifyContent={{xs:"space-between", md:"flex-end"}}>
+        <Box display="flex" padding={3}  justifyContent={{xs:"space-between", md:"flex-end"}}>
           <Box
             border="1px solid black"
             borderRadius={1}
-            padding={0.2}
-            marginLeft={2}           
+            padding={0.2}         
             sx={{
               display: { md: "none" },
               cursor: "pointer",
@@ -164,8 +154,8 @@ const Movies = () => {
           >
             <HiAdjustmentsHorizontal style={{ fontSize: "2rem" }} />
           </Box>
-          <Button marginLeft="auto" variant="contained" onClick={handleClearFilters} border="1px solid black">
-            Clear Filters
+          <Button variant="contained" onClick={handleClearFilters} border="1px solid black">
+            Clear 
           </Button>
         </Box>
         <Box

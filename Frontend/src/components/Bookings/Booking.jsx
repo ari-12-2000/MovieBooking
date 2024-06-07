@@ -6,27 +6,30 @@ import {
   Typography,
   Grid,
   Paper,
-  CircularProgress,
+ 
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMovieDetails, newBooking } from "../../api-helpers/api-helpers";
+import useLoader from "../../hooks/useLoader";
+import Loader from "../Loader";
 
 const Booking = () => {
   const [movie, setMovie] = useState();
   const [inputs, setInputs] = useState({ seatNumber: "", date: "" });
-  const [loading, setLoading] = useState(true);
+  const {loading, showLoader, hideLoader} = useLoader();
   const [error, setError] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    showLoader();
     getMovieDetails(id)
       .then((res) => {
         setMovie(res);
-        setLoading(false);
+        hideLoader();
       })
-      .catch((err) => {setLoading(false);console.log(err)});
+      .catch((err) => {hideLoader();console.log(err)});
   }, [id]);
 
   const handleChange = (e) => {
@@ -37,16 +40,16 @@ const Booking = () => {
   };
 
   const handleSubmit = (e) => {
-    setLoading(true);
+    showLoader();
     e.preventDefault();
     newBooking({ ...inputs, movie: movie._id })
       .then(() => {
         navigate("/");
-        setLoading(false);
+        hideLoader();
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
+        hideLoader();
         setError("Invalid Input or inputs already used");
       });
   };
@@ -62,16 +65,8 @@ const Booking = () => {
 
   return (
     <Box padding={2} height="100%">
-      {loading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="100%"
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
+      {loading ? <Loader/>
+       : (
         movie && (
           <>
             <Typography
