@@ -229,7 +229,7 @@ const Header = () => {
     let value = e.target.value.trim();
     if (!value && !searchTerm) return; //if current value is blank and last searchTerm which means nothing was searched and currently nothing is searched
     dispatch(setSearchTerm(value));
-    if (location.pathname !== "/movies") navigate("/movies"); // to load the movies page such that it shows items according to current search term component whenever searchterm is updated
+    if (location.pathname !== "/movies") navigate("/movies"); 
   };
 
   return (
@@ -282,7 +282,7 @@ const Header = () => {
                   ...params.InputProps,
                   type: "search",
                 }}
-                onChange={handleChange}
+                onChange={handleChange}// Material-UI's TextField component's onChange prop behaves like the native input event rather than the change event. This                                                   means it triggers on every keystroke or change. 
                 disabled={isErrorPage}
               />
             )}
