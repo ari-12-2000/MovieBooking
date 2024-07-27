@@ -4,10 +4,8 @@ const { generateToken } = require("../jwt");
 const addAdmin = async (req, res, next) => {
   const { name, email, password } = req.body;
   if (
-     name.trim() ||
-    !email ||
+     !name.trim() ||
     !email.trim() ||
-    !password ||
     !password.trim() 
    
   ) {
