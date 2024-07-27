@@ -16,12 +16,9 @@ const signup = async (req, res, next) => {
 
   const { name, email, password } = req.body;
   if (
-    !name &&
-    name.trim() === "" ||
-    !email &&
-    email.trim() === "" ||
-    !password &&
-    password.trim() === ""
+    !name.trim()||
+    !email.trim()||
+    !password.trim()
   ) {
     return res.status(500).json({ message: "Invalid Inputs" });
   }
@@ -78,7 +75,7 @@ const deleteUser = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email && email.trim() === "" || !password && password.trim() === "") {
+  if (!email.trim()|| !password.trim()) {
     return res.status(500).json({ message: "Invalid Inputs" });
   }
   try {
