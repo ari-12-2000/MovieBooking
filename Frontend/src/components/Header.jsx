@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   AppBar,
-  Autocomplete,
   Box,
   IconButton,
   ListItem,
@@ -16,19 +15,22 @@ import {
   List,
 } from "@mui/material";
 import MovieCreationIcon from "@mui/icons-material/MovieCreation";
+import CloseIcon from "@mui/icons-material/Close";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions, adminActions, setSearchTerm } from "../store/index";
 import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = useState(0);
+  const [inputValue, setInputValue] = useState("");
+  const [fieldEmpty, setFieldEmpty] = useState(location.pathname === "/");
   const [isErrorPage, setIsErrorPage] = useState(
     location.pathname === "/error"
   );
-
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
   const searchTerm = useSelector((state) => state.movies.searchTerm);
@@ -51,28 +53,27 @@ const Header = () => {
       case "/add":
         setValue(2);
         break;
+
+      case "/admin":
+      case "/login":  
+        setValue(3);
+        break;  
       default:
-        setValue(false);
+        setValue(-1);
     }
+    if (!fieldEmpty)
+      //if field is already empty then you should not handle fieldEmpty state (close icon in the searchbar depends on fieldEmpty state).
+      setFieldEmpty(location.pathname !== "/movies");
 
     setIsErrorPage(location.pathname === "/error");
   }, [location.pathname, setIsErrorPage]);
 
-  const handleMovieSelect = (val) => {
-    dispatch(setSearchTerm(val));
-    if (val && val.trim() !== "") {
-      const movie = movies.find(
-        (mov) => mov.title.toLowerCase() === val.toLowerCase()
-      );
-
-      if (isUserLoggedIn) {
-        if (movie) navigate(`/booking/${movie._id}`);
-        else navigate("/error");
-      } else {
-        navigate("/auth");
-      }
+  useEffect(() => {
+    if (fieldEmpty) {
+      setInputValue("");
+      dispatch(setSearchTerm("")); //match with input value to remove array search filter
     }
-  };
+  }, [fieldEmpty]);
 
   const handleTabChange = (event, newValue) => {
     //whenever tab is changed a new value is set and due to navlink the tab with that corresponding value is highlighted
@@ -126,7 +127,7 @@ const Header = () => {
             <ListItemText primary="Admin" />
           </ListItemButton>
         </ListItem>,
-        <ListItem key="auth" to="/auth" component={Link}>
+        <ListItem key="login" to="/auth" component={Link}>
           <ListItemButton>
             <ListItemText primary="Login" />
           </ListItemButton>
@@ -146,8 +147,8 @@ const Header = () => {
         <Tab
           key="logout"
           onClick={() => dispatch(userActions.logout())}
-          LinkComponent={Link}
-          to="/"
+          LinkComponent={NavLink}
+          to={location.pathname}
           label="Logout"
           disabled={isErrorPage} // Disable the tab if current path is "/error"
         />
@@ -158,12 +159,9 @@ const Header = () => {
             <ListItemText primary="Profile" />
           </ListItemButton>
         </ListItem>,
-        <ListItem
-          key="logout"
-          to="/"
-          component={Link}
-          onClick={() => dispatch(userActions.logout())}
-        >
+        <ListItem key="logout" onClick={() => dispatch(userActions.logout())}
+        component={NavLink}
+        to={location.pathname}>
           <ListItemButton>
             <ListItemText primary="Logout" />
           </ListItemButton>
@@ -190,8 +188,8 @@ const Header = () => {
         <Tab
           key="admin-logout"
           onClick={() => dispatch(adminActions.logout())}
-          LinkComponent={Link}
-          to="/"
+          LinkComponent={NavLink}
+          to={location.pathname}
           label="Logout"
           disabled={isErrorPage} // Disable the tab if current path is "/error"
         />
@@ -210,9 +208,9 @@ const Header = () => {
 
         <ListItem
           key="admin-logout"
-          to="/"
-          component={Link}
           onClick={() => dispatch(adminActions.logout())}
+          component={NavLink}
+          to={location.pathname}
         >
           <ListItemButton>
             <ListItemText primary="Logout" />
@@ -225,11 +223,18 @@ const Header = () => {
   };
 
   const handleChange = (e) => {
+    setInputValue(e.target.value);
     //when some alphabets or white spaces are entered in the search box this function is called
     let value = e.target.value.trim();
-    if (!value && !searchTerm) return; //if current value is blank and last searchTerm which means nothing was searched and currently nothing is searched
-    dispatch(setSearchTerm(value));
-    if (location.pathname !== "/movies") navigate("/movies"); 
+    //if current value is blank and last searchTerm blank return
+    if (!value && !searchTerm) {
+      // if a case arise input value you made empty through backspace but previous searchterm was not blank and array is filtered based on that, so control should not return and match searchterm with current blank input value through dispatch method (make search filter blank).
+      setFieldEmpty(true);
+      return;
+    }
+    setFieldEmpty(false);
+    dispatch(setSearchTerm(value)); //matching searchTerm with current value to filter array correctly
+    if (location.pathname !== "/movies") navigate("/movies");
   };
 
   return (
@@ -255,39 +260,45 @@ const Header = () => {
           <MovieCreationIcon />
         </Link>
 
-        <Box width={{ xs: "100%", sm: "300px" }} margin="auto">
-          <Autocomplete
-            onChange={(e, val) => handleMovieSelect(val)}
+        <Box
+          display="flex"
+          border="1px solid grey"
+          borderRadius="5px"
+          paddingInline="5px"
+          width={{ xs: "100%", sm: "350px" }}
+          margin="auto"
+          gap="10px"
+          alignItems={"center"}
+          color={"grey"}
+        >
+          <SearchIcon />
+          <TextField
             sx={{
+              borderRadius: 2,
+              input: { color: "white" },
+              bgcolor: "#2b2d42",
+              padding: "6px",
               width: "100%",
-              borderRadius: 10,
-              pointerEvents: isErrorPage ? "none" : "auto",
             }}
-            freeSolo
-            id="free-solo-2-demo"
-            disableClearable
-            options={movies.map((option) => option.title)}
-            renderInput={(params) => (
-              <TextField
-                sx={{
-                  borderRadius: 2,
-                  input: { color: "white" },
-                  bgcolor: "#2b2d42",
-                  padding: "6px",
-                }}
-                variant="standard"
-                placeholder="Search Across Multiple Movies"
-                {...params}
-                InputProps={{
-                  ...params.InputProps,
-                  type: "search",
-                }}
-                onChange={handleChange}// Material-UI's TextField component's onChange prop behaves like the native input event rather than the change event. This                                                   means it triggers on every keystroke or change. 
-                disabled={isErrorPage}
-              />
-            )}
+            variant="standard"
+            placeholder="Search Across Multiple Movies"
+            onChange={handleChange} // Material-UI's TextField component's onChange prop behaves like the native input event rather than the change event. This                                                   means it triggers on every keystroke or change.
             disabled={isErrorPage}
+            value={inputValue}
           />
+          <button
+            onClick={() => setFieldEmpty(true)}
+            type="button"
+            style={{
+              backgroundColor: "#2b2d42",
+              padding: "5px",
+              color: "grey",
+              fontSize: "x-small",
+            }}
+            className={fieldEmpty ? "hidden" : "display"}
+          >
+            <CloseIcon />
+          </button>
         </Box>
         {isMobile ? (
           <Drawer

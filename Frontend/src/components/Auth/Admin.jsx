@@ -17,7 +17,7 @@ const Admin = () => {
     dispatch(userActions.logout());
     localStorage.setItem("adminId", data.id);
     localStorage.setItem("token", data.token);
-    navigate("/");
+    navigate(-1);
     hideLoader();
   };
 
@@ -25,9 +25,9 @@ const Admin = () => {
     showLoader();
     sendAdminAuthRequest(data.inputs)
       .then(onResRecieved)
-      .catch((err) => {
+      .catch(() => {
         hideLoader();
-        setError("Invalid Input or inputs already used");
+        setError("Credentials Not Allowed");
       });
   };
 

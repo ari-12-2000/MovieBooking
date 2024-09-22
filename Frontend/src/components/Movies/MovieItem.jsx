@@ -9,30 +9,28 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
- 
   return (
     <Card
       sx={{
         marginTop: 2,
-        
+
         borderRadius: 5,
-        "&:hover": { boxShadow: "10px 10px 20px #ccc" },
+        "&:hover": { boxShadow: "10px 10px 20px 5px #ccc, -10px -10px 20px 5px #ccc" },
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        height:"500px",
-        width:"280px"
+        height: "500px",
+        width: "280px",
       }}
     >
       <img
         src={posterUrl}
         alt={title}
-       height="60%"
-       width="100%"
-       object-fit="cover"
-        
+        height="60%"
+        width="100%"
+        object-fit="cover"
       />
-      <CardContent >
+      <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
@@ -43,15 +41,14 @@ const MovieItem = ({ title, releaseDate, posterUrl, id, genre }) => {
           {genre}
         </Typography>
       </CardContent>
-      <CardActions marginTop={-1}>
+      <CardActions >
         <Button
           component={Link}
           to={`/booking/${id}`}
-          fullWidth 
+          fullWidth
           size="small"
           variant="contained"
-          sx={{margin:"0px 10px 6px 10px"}}
-         
+          sx={{ margin: "0px 10px 6px 10px" }}
         >
           Book
         </Button>

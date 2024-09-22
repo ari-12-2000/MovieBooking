@@ -11,7 +11,6 @@ import {
 import React, { useState } from "react";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Link } from "react-router-dom";
-import useLoader from "../../hooks/useLoader";
 import Loader from "../Loader";
 
 const labelStyle = { mt: 1, mb: 1 };

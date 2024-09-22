@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setKeyValue } from "../../store";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import Loader from "../Loader";
 
 const Movies = () => {
   const navigate = useNavigate();
