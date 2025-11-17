@@ -17,7 +17,7 @@ import AddMovie from "./components/Movies/AddMovie.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx"; // import the protected route component
 
-axios.defaults.baseURL = "https://moviebooking-9iea.onrender.com";
+axios.defaults.baseURL = "https://moviebooking-1-1ph6.onrender.com";
 
 const router = createBrowserRouter([
   {
